@@ -1,10 +1,11 @@
-# Naughts and Crosses - Version 3.0
+# Naughts and Crosses - Version 3.1
 # Alternate between two players.
 # Allow column selection
 # - Validate it's a valid column
 # - Add counter to column
 # - - Validate to ensure not taller than permitted.
 # - Check for a winner, vertically
+# - Check for a winner, horizontally
 
 COLUMNS = 6
 ROWS = 5
@@ -110,8 +111,42 @@ def hasWinnerVertically():
 
     return False
 
+
+def hasWinnerHorizontally():
+    global board
+    global playerCounters
+    global ROWS
+    global COLUMNS
+
+    lastValue = ''
+    inlineCount = 0
+
+    for row in range(ROWS):
+        for col in range(1, COLUMNS + 1):
+            if len(board[col]) < row + 1:
+                lastValue = ''
+                inlineCount = 0
+                continue
+
+            if board[col][row] != lastValue:
+                lastValue = board[col][row]
+                inlineCount = 1
+            else:
+                inlineCount += 1
+
+            if inlineCount >= 4:
+                return True
+
+        lastValue = ''
+        inlineCount = 0
+
+    return False
+
 def hasWinner():
     if hasWinnerVertically():
+        return True
+
+    if hasWinnerHorizontally():
         return True
 
     return False
