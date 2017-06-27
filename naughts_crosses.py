@@ -1,4 +1,4 @@
-# Naughts and Crosses - Version 2.2
+# Naughts and Crosses - Version 3.0
 # Alternate between two players.
 # Allow column selection
 # - Validate it's a valid column
