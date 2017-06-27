@@ -4,6 +4,7 @@
 # - Validate it's a valid column
 # - Add counter to column
 # - - Validate to ensure not taller than permitted.
+# - Check for a winner, vertically
 
 COLUMNS = 6
 ROWS = 5
@@ -86,9 +87,36 @@ def addCounter(column):
 
     board[column].append(getPlayerCounter())
 
+def hasWinnerVertically():
+    global board
+    global playerCounters
+
+    inlineCount = { playerCounters[1] : 0, playerCounters[2] : 0 }
+
+    for col in board.keys():
+        for row in board[col]:
+            inlineCount[row] += 1
+
+    if max(inlineCount.values()) >= 4:
+        return True
+
+    return False
+
+def hasWinner():
+    if hasWinnerVertically():
+        return True
+
+    return False
+
+def isDraw():
+    return False
+
+def getWinner():
+    return "U"
+
 prepareBoard()
 
-while not isWon:
+while not hasWinner() and not isDraw():
     print("Player %d, it's your turn! You are %s" % (playerTurn, getPlayerCounter()))
 
     print(board)
@@ -100,3 +128,7 @@ while not isWon:
     print("\n=====NEXT PLAYER=====\n")
     nextTurn()
 
+if hasWinner():
+    print("Player %s has won the game!" % (getWinner()))
+else:
+    print("It was a draw - nobody won!")
