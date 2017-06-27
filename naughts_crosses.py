@@ -1,10 +1,12 @@
-# Naughts and Crosses - Version 2.1
+# Naughts and Crosses - Version 2.2
 # Alternate between two players.
 # Allow column selection
 # - Validate it's a valid column
 # - Add counter to column
+# - - Validate to ensure not taller than permitted.
 
 COLUMNS = 6
+ROWS = 5
 
 playerTurn = 1
 playerCounters = { 1 : "O", 2 : "X" }
@@ -34,7 +36,7 @@ def nextTurn():
     else:
         playerTurn = 1
 
-def validateColumn(column):
+def guardAgainstInvalidColumn(column):
     global COLUMNS
 
     if column < 0:
@@ -45,16 +47,35 @@ def validateColumn(column):
 
     return True
 
+def guardAgainstColumnOverflow(column):
+    global ROWS
+    global board
+
+    if not guardAgainstInvalidColumn(column):
+        return False
+
+    if len(board[column]) + 1 > ROWS:
+        return False
+
+    return True
+
 def inputColumnSelection():
     try:
         col = int(input("Enter the column (1-6)"))
 
-        if not validateColumn(col):
+        if not guardAgainstInvalidColumn(col):
             raise ValueError
+
+        if not guardAgainstColumnOverflow(col):
+            raise OverflowError
 
         return col
     except ValueError:
         print("Your input wasn't valid.")
+
+        return inputColumnSelection()
+    except OverflowError:
+        print("This column is full.")
 
         return inputColumnSelection()
 
