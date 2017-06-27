@@ -91,14 +91,22 @@ def hasWinnerVertically():
     global board
     global playerCounters
 
-    inlineCount = { playerCounters[1] : 0, playerCounters[2] : 0 }
+    lastValue = ''
+    inlineCount = 0
 
     for col in board.keys():
         for row in board[col]:
-            inlineCount[row] += 1
+            if row != lastValue:
+                lastValue = row
+                inlineCount = 1
+            else:
+                inlineCount += 1
 
-    if max(inlineCount.values()) >= 4:
-        return True
+            if inlineCount >= 4:
+                return True
+
+        lastValue = ''
+        inlineCount = 0
 
     return False
 
