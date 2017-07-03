@@ -30,6 +30,30 @@ def prepareBoard():
 
     return board
 
+def drawBoard():
+    global board
+    global COLUMNS
+    global ROWS
+
+    print('| 1 | 2 | 3 | 4 | 5 | 6 |')
+    print('--------------------------------')
+
+    for row in range(ROWS):
+        rowHeight = ROWS - row
+        currentRow = '|'
+        for col in range(1, COLUMNS + 1):
+            if len(board[col]) < rowHeight:
+                currentRow += '   |'
+            elif board[col][rowHeight - 1] == 'O':
+                currentRow += ' O |'
+            elif board[col][rowHeight - 1] == 'X':
+                currentRow += ' X |'
+
+        print(currentRow)
+        print('--------------------------------')
+
+
+
 def nextTurn():
     global playerTurn
 
@@ -148,20 +172,25 @@ def hasWinnerDiagonally():
     global board
     global playerCounters
     global ROWS
-    global COLLUMNS
+    global COLUMNS
 
-    for col in range(1, COLLUMNS + 1):
+    for col in range(1, COLUMNS + 1):
         # | If the column is empty then it can just be skipped.
         rowsHigh = len(board[col])
         if not rowsHigh > 0:
             continue
 
-        for row in rowsHigh:
+        for row in range(rowsHigh):
             if findFourDiagonally(col, row, 1):
                 return True
 
     return False
 
+# | findFourDiagonally()
+# |-----------------------------------------------------------------------
+# | Function which searches for matching values around a given space in
+# | the board. To be called to check for a diagonal winning move.
+# |---------------------------------------------------------
 def findFourDiagonally(col, row, count):
     global board
 
@@ -175,6 +204,7 @@ def findFourDiagonally(col, row, count):
     try:
         newValue = board[newCol][newRow]
     except (IndexError, KeyError):
+        print('Error')
         return False
 
     if newValue == value:
@@ -203,7 +233,7 @@ prepareBoard()
 while not hasWinner() and not isDraw():
     print("Player %d, it's your turn! You are %s" % (playerTurn, getPlayerCounter()))
 
-    print(board)
+    drawBoard()
 
     col = inputColumnSelection()
 
@@ -211,6 +241,7 @@ while not hasWinner() and not isDraw():
 
     nextTurn()
 
+drawBoard()
 if hasWinner():
     print("Player %s has won the game!" % (getWinner()))
 else:
