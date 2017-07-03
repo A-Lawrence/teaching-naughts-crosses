@@ -36,7 +36,7 @@ def drawBoard():
     global ROWS
 
     print('| 1 | 2 | 3 | 4 | 5 | 6 |')
-    print('--------------------------------')
+    print('-------------------------')
 
     for row in range(ROWS):
         rowHeight = ROWS - row
@@ -50,9 +50,7 @@ def drawBoard():
                 currentRow += ' X |'
 
         print(currentRow)
-        print('--------------------------------')
-
-
+        print('-------------------------')
 
 def nextTurn():
     global playerTurn
@@ -137,7 +135,6 @@ def hasWinnerVertically():
 
     return False
 
-
 def hasWinnerHorizontally():
     global board
     global playerCounters
@@ -183,7 +180,6 @@ def hasWinnerDiagonally():
         for row in range(rowsHigh):
             if findFourDiagonally(col, row, 1, 'right') or findFourDiagonally(col, row ,1, 'left'):
                 return True
-
     return False
 
 # | findFourDiagonally()
