@@ -181,7 +181,7 @@ def hasWinnerDiagonally():
             continue
 
         for row in range(rowsHigh):
-            if findFourDiagonally(col, row, 1):
+            if findFourDiagonally(col, row, 1, 'right') or findFourDiagonally(col, row ,1, 'left'):
                 return True
 
     return False
@@ -191,24 +191,28 @@ def hasWinnerDiagonally():
 # | Function which searches for matching values around a given space in
 # | the board. To be called to check for a diagonal winning move.
 # |---------------------------------------------------------
-def findFourDiagonally(col, row, count):
+def findFourDiagonally(col, row, count, direction):
     global board
 
     if count == 4:
         return True
 
     value = board[col][row]
-    newCol = col + 1
     newRow = row + 1
+
+    if direction == 'right':
+        newCol = col + 1
+
+    if direction == 'left':
+        newCol = col - 1
 
     try:
         newValue = board[newCol][newRow]
     except (IndexError, KeyError):
-        print('Error')
         return False
 
     if newValue == value:
-        return findFourDiagonally(newCol, newRow, count+1)
+        return findFourDiagonally(newCol, newRow, count+1, direction)
 
 def hasWinner():
     if hasWinnerVertically():
