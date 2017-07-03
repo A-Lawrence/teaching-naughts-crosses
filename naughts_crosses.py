@@ -33,6 +33,8 @@ def prepareBoard():
 def nextTurn():
     global playerTurn
 
+    print("\n=====NEXT PLAYER=====\n")
+
     if playerTurn == 1:
         playerTurn = 2
     else:
@@ -168,7 +170,6 @@ while not hasWinner() and not isDraw():
 
     addCounter(col)
 
-    print("\n=====NEXT PLAYER=====\n")
     nextTurn()
 
 if hasWinner():
