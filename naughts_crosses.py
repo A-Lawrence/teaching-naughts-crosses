@@ -144,11 +144,50 @@ def hasWinnerHorizontally():
 
     return False
 
+def hasWinnerDiagonally():
+    global board
+    global playerCounters
+    global ROWS
+    global COLLUMNS
+
+    for col in range(1, COLLUMNS + 1):
+        # | If the column is empty then it can just be skipped.
+        rowsHigh = len(board[col])
+        if not rowsHigh > 0:
+            continue
+
+        for row in rowsHigh:
+            if findFourDiagonally(col, row, 1):
+                return True
+
+    return False
+
+def findFourDiagonally(col, row, count):
+    global board
+
+    if count == 4:
+        return True
+
+    value = board[col][row]
+    newCol = col + 1
+    newRow = row + 1
+
+    try:
+        newValue = board[newCol][newRow]
+    except (IndexError, KeyError):
+        return False
+
+    if newValue == value:
+        return findFourDiagonally(newCol, newRow, count+1)
+
 def hasWinner():
     if hasWinnerVertically():
         return True
 
     if hasWinnerHorizontally():
+        return True
+
+    if hasWinnerDiagonally():
         return True
 
     return False
