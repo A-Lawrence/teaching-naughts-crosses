@@ -1,0 +1,2 @@
+# teaching-naughts-crosses
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e5dde177f99d405c82a6d68385f46d82)](https://www.codacy.com/app/artisan/teaching-naughts-crosses?utm_source=github.com&utm_medium=referral&utm_content=A-Lawrence/teaching-naughts-crosses&utm_campaign=badger)
