@@ -30,8 +30,32 @@ def prepareBoard():
 
     return board
 
+def drawBoard():
+    global board
+    global COLUMNS
+    global ROWS
+
+    print('| 1 | 2 | 3 | 4 | 5 | 6 |')
+    print('-------------------------')
+
+    for row in range(ROWS):
+        rowHeight = ROWS - row
+        currentRow = '|'
+        for col in range(1, COLUMNS + 1):
+            if len(board[col]) < rowHeight:
+                currentRow += '   |'
+            elif board[col][rowHeight - 1] == 'O':
+                currentRow += ' O |'
+            elif board[col][rowHeight - 1] == 'X':
+                currentRow += ' X |'
+
+        print(currentRow)
+        print('-------------------------')
+
 def nextTurn():
     global playerTurn
+
+    print("\n=====NEXT PLAYER=====\n")
 
     if playerTurn == 1:
         playerTurn = 2
@@ -111,7 +135,6 @@ def hasWinnerVertically():
 
     return False
 
-
 def hasWinnerHorizontally():
     global board
     global playerCounters
@@ -142,11 +165,59 @@ def hasWinnerHorizontally():
 
     return False
 
+def hasWinnerDiagonally():
+    global board
+    global playerCounters
+    global ROWS
+    global COLUMNS
+
+    for col in range(1, COLUMNS + 1):
+        # | If the column is empty then it can just be skipped.
+        rowsHigh = len(board[col])
+        if rowsHigh < 1:
+            continue
+
+        for row in range(rowsHigh):
+            if findFourDiagonally(col, row, 1, 'right') or findFourDiagonally(col, row ,1, 'left'):
+                return True
+    return False
+
+# | findFourDiagonally()
+# |-----------------------------------------------------------------------
+# | Function which searches for matching values around a given space in
+# | the board. To be called to check for a diagonal winning move.
+# |---------------------------------------------------------
+def findFourDiagonally(col, row, count, direction):
+    global board
+
+    if count == 4:
+        return True
+
+    value = board[col][row]
+    newRow = row + 1
+
+    if direction == 'right':
+        newCol = col + 1
+
+    if direction == 'left':
+        newCol = col - 1
+
+    try:
+        newValue = board[newCol][newRow]
+    except (IndexError, KeyError):
+        return False
+
+    if newValue == value:
+        return findFourDiagonally(newCol, newRow, count+1, direction)
+
 def hasWinner():
     if hasWinnerVertically():
         return True
 
     if hasWinnerHorizontally():
+        return True
+
+    if hasWinnerDiagonally():
         return True
 
     return False
@@ -162,15 +233,15 @@ prepareBoard()
 while not hasWinner() and not isDraw():
     print("Player %d, it's your turn! You are %s" % (playerTurn, getPlayerCounter()))
 
-    print(board)
+    drawBoard()
 
     col = inputColumnSelection()
 
     addCounter(col)
 
-    print("\n=====NEXT PLAYER=====\n")
     nextTurn()
 
+drawBoard()
 if hasWinner():
     print("Player %s has won the game!" % (getWinner()))
 else:
