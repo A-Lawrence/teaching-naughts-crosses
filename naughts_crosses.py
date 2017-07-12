@@ -174,7 +174,7 @@ def hasWinnerDiagonally():
     for col in range(1, COLUMNS + 1):
         # | If the column is empty then it can just be skipped.
         rowsHigh = len(board[col])
-        if not rowsHigh > 0:
+        if rowsHigh < 1:
             continue
 
         for row in range(rowsHigh):
